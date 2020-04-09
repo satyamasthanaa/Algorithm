@@ -12,17 +12,14 @@ using namespace std;
 string add(string lhs, string rhs) {
 	int length = max(lhs.size(), rhs.size());
 	int carry = 0;
-	int sum_col;  // sum of two digits in the same column
+	int sum_col;  
 	string result;
 
-	// pad the shorter string with zeros
 	while (lhs.size() < length)
 		lhs.insert(0, "0");
 
 	while (rhs.size() < length)
 		rhs.insert(0, "0");
-
-	// build result string from right to left
 	for (int i = length - 1; i >= 0; i--) {
 		sum_col = (lhs[i] - '0') + (rhs[i] - '0') + carry;
 		carry = sum_col / 10;
@@ -31,8 +28,6 @@ string add(string lhs, string rhs) {
 
 	if (carry)
 		result.insert(0, to_string(carry));
-
-	// remove leading zeros
 	return result.erase(0, min(result.find_first_not_of('0'), result.size() - 1));
 }
 
@@ -52,8 +47,6 @@ string subtract(string lhs, string rhs) {
 		if (diff >= 0)
 			result.insert(0, to_string(diff));
 		else {
-
-			// borrow from the previous column
 			int j = i - 1;
 			while (j >= 0) {
 				lhs[j] = ((lhs[j] - '0') - 1) % 10 + '0';
