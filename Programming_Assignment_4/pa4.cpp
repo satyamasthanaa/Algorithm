@@ -17,7 +17,7 @@ using std::unordered_set;
 using std::pair;
 using std::set;
 
-namespace std { // make pair hashable
+namespace std { 
 template <> struct hash<std::pair<int, int>> {
     inline size_t operator()(const std::pair<int, int> &v) const {
         std::hash<int> int_hasher;
@@ -26,7 +26,7 @@ template <> struct hash<std::pair<int, int>> {
 };
 }
 
-// clock_t Begin, End;
+
 
 struct vertex{
     vertex(int self_num_){
@@ -50,7 +50,7 @@ struct Graph{
 
         if (myfile.is_open()){
             while( std::getline(myfile,line) ){
-        // Begin = clock();
+      
                 std::stringstream stream(line);
                 std::istream_iterator<string> begin(stream),end;
                 vector<string> vstring(begin,end);
@@ -63,11 +63,7 @@ struct Graph{
                 vertex v(std::stoi(vstring.front()));
                 vertices.emplace_back(v);
 
-                // for (auto i=vstring.begin()+1;i < vstring.end();++i){
-                //     neighbor.emplace_back(std::stoi(*i));
-                // } // this initialization is more explicit to understand, but in ~2/3 cases, it's slower!
-        // End = clock();
-        // cout << float(End-Begin)/CLOCKS_PER_SEC << endl;
+                
                 for (auto i:neighbor){
                     if (i > v.self_num){
                         edges.insert(pair<int,int>(v.self_num,i));
@@ -133,15 +129,15 @@ struct Graph{
         srand (time(NULL));
         while (true){
             int random = rand()%edges.size();
-            int first = majia[std::next(edges.begin(),random)->first]; // encode of vertex in vector is equal
-            int second = majia[std::next(edges.begin(),random)->second];// to the one in real data minus 1.
-            vertex v1 = vertices[first-1];//dont!!! use vertex& v1
+            int first = majia[std::next(edges.begin(),random)->first]; 
+            int second = majia[std::next(edges.begin(),random)->second];
+            vertex v1 = vertices[first-1];
             vertex v2 = vertices[second-1];
             vertex v_temp(v1,v2,vertices.size()+1);
             vertices.emplace_back(v_temp);
             RebuildEdges(v1,v2);
             if (edges.size()<=0){
-                // cout << "Merging terminated!!!" << endl;
+               
                 return edge_history.back();
             }
             edge_history.emplace_back(edges.size());
@@ -160,7 +156,7 @@ int main(){
     Graph graph(myfile);
     graph.Backup();
     int size = graph.vertices.size();
-    size = int(size*5);//*log(size)
+    size = int(size*5);
     cout << "size:" << size << endl;
     vector<int> mincut_history;
     mincut_history.reserve(size);
@@ -168,13 +164,13 @@ int main(){
     for (int i=0;i<size;++i){
         cout << float(i)/float(size) << endl;
         int temp = graph.Merge();
-        // cout << temp << "," << endl;
+        
         mincut_history.emplace_back(temp);
         graph.Recovery();
     }
     cout << "\n\n" << *std::min_element(mincut_history.begin(),mincut_history.end()) << endl;
-    //Ans: 17
+   
 
     return 0;
 
-}
+}//output 17
